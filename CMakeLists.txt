@@ -223,7 +223,5 @@ target_link_libraries(initialize_points ${catkin_LIBRARIES})
 add_dependencies(initialize_points tsp_gencpp)
 
 
-# add_executable(draw src/draw)
-# target_link_libraries(draw ${catkin_LIBRARIES})
-# add_executable(rkga src/rkga.cpp)
-# target_link_libraries(rkga ${catkin_LIBRARIES})
+add_executable(draw src/draw)
+target_link_libraries(draw ${catkin_LIBRARIES})

@@ -1,6 +1,4 @@
 #include <iostream>
-#include <sstream>
-#include <ros/package.h>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "std_msgs/Int32MultiArray.h"
@@ -9,34 +7,11 @@
 #include "tsp/line.h"
 #include "tsp/rkga.h"
 #include "tsp/util.h"
-#include<fstream>
+
 
 #define NUM_POINTS 30
-// Point points[NUM_POINTS];
 
 
-std::vector<Point> readPoints(){
-    std::string cwd_path = ros::package::getPath("tsp");
-    std::string points_file = cwd_path + "/config/com.txt";
-
-    std::ifstream in;
-    in.open(points_file);
-    std::string s;
-    std::vector<Point> points;
-    int count = 0;
-    while (getline(in, s)){
-        //逐行读取数据并存于s中，直至数据全部读取
-        float x,y;
-        std::stringstream point_xy;
-        point_xy.str(s);
-        point_xy>>x;
-        point_xy>>y;
-        points.push_back(Point(x,y));
-        std::cout<<x<<' '<<y<<count<<'\n';
-        count ++;
-    }
-    return points;
-}
 
 
 std::vector<int> ga_main(std::vector<Point> &points){

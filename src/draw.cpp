@@ -3,9 +3,10 @@
 #include <visualization_msgs/Marker.h>
 #include "tsp/draw.h"
 #include "tsp/point.h"
+#include "tsp/util.h"
 #include <iostream>
 
-Draw::Draw(ros::NodeHandle * nh, Point *points){
+Draw::Draw(ros::NodeHandle * nh, std::vector<Point> points){
     marker_pub = nh->advertise<visualization_msgs::Marker>("visualization_marker", 10);
     path_sub = nh->subscribe("/path", 1000, &Draw::paint, this);
     this->points = points;
@@ -14,22 +15,58 @@ Draw::Draw(ros::NodeHandle * nh, Point *points){
 // path msg contains the node index in the path
 void Draw::paint(const std_msgs::Int32MultiArray& msg){
     std::vector<int> index = msg.data;
-    std::cout<<points[index[0]].x<<' '<<points[index[0]].y;
+    ROS_INFO("paint the points");
+    ros::Rate r(1);
+    int num_points = points.size();
+    while(ros::ok()){
+        visualization_msgs::Marker nodes, edges;
+        nodes.header.frame_id = edges.header.frame_id = "/tsp_frame";
+        nodes.header.stamp = edges.header.stamp = ros::Time::now();
+        nodes.ns = edges.ns = "draw";
+        nodes.action = edges.action = visualization_msgs::Marker::ADD;
+        nodes.pose.orientation.w = edges.pose.orientation.w = 1.0;
+
+        nodes.id = 0;
+        edges.id = 1;
+
+        nodes.type = visualization_msgs::Marker::POINTS;
+        edges.type = visualization_msgs::Marker::LINE_STRIP;
+        // POINTS markers use x and y scale for width/height respectively
+        nodes.scale.x = 0.2;
+        nodes.scale.y = 0.2;
+
+        // LINE_STRIP/LINE_LIST markers use only the x component of scale, for the line width
+        edges.scale.x = 0.1;
+
+        // nodes are green
+        nodes.color.g = 1.0f;
+        nodes.color.a = 1.0;
+
+        // edges is blue
+        edges.color.b = 1.0;
+        edges.color.a = 0.6;
+
+        for(int i = 0; i < num_points; ++i){
+            geometry_msgs::Point p;
+            p.x = points[index[i]].x;
+            p.y = points[index[i]].y;
+            p.z = 0;
+
+            nodes.points.push_back(p);
+            edges.points.push_back(p);
+        }
+        marker_pub.publish(nodes);
+        marker_pub.publish(edges);
+        r.sleep();
+    }
 }
+
 
 int main (int argc, char **argv)
 {
     ros::init(argc, argv, "draw_tsp");
     ros::NodeHandle nh;
-    int num_points;
-    if (nh.getParam("NUM_POINTS", num_points))
-    {
-      ROS_INFO("Got param NUM_POINTS: %d", num_points);
-    }
-    else
-    {
-      ROS_ERROR("Failed to get param 'NUM_POINTS'");
-    }
+    std::vector<Point> points = readPoints();
     Draw draw = Draw(&nh, points);
     ros::spin();
 }
