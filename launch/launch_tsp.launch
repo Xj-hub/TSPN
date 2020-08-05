@@ -1,5 +1,5 @@
 <launch>
     <rosparam command="load" file="$(find tsp)/config/tsp_param.yaml" />
-    <node name="initial" pkg="tsp" type="initialize_points"/>
+    <node name="initialize_points" pkg="tsp" type="initialize_points" output="screen"/>
     <node name="path_talker" pkg="tsp" type="test_random_case"/>
 </launch>

@@ -24,7 +24,7 @@ public:
 
     bool callback(std_srvs::Empty::Request &req,
             std_srvs::Empty::Response &res){
-        
+        ROS_INFO("Initialize %d points", num_points);
         ROS_INFO("Initialize points randomly");
         return true;
     }
