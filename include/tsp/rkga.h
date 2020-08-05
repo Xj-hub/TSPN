@@ -35,6 +35,7 @@ inline bool compareAscendingFitness(const Chromosome &c1,const Chromosome &c2)
 
 class RKGA
 {
+    std::vector<Point> points;
     float Ps; // percentage of the new population constituted by selection
     float Px; // percentage of the new population constituted by crossover
     float Pu; // threshold for the crossover
@@ -45,6 +46,7 @@ class RKGA
 public:
     int MaxGeneration;  // define the max generation
     RKGA(
+        std::vector<Point> points,
         float Ps, // percentage of the new population constituted by selection
         float Px, // percentage of the new population constituted by crossover
         float Pu, // threshold for the crossover
@@ -53,9 +55,9 @@ public:
         int PopulaionSize,  //define the size of populaion;
         int MaxGeneration   // define the max generation
     );
-    void initialize(Point * points);
-    int select(Point * points);
-    int crossover(Point * points);
+    void initialize();
+    int select();
+    int crossover();
     void mutate();
     void immigrate();
     void printResult();

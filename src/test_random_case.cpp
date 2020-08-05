@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <sstream>
+#include <ros/package.h>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "std_msgs/Int32MultiArray.h"
@@ -8,28 +9,43 @@
 #include "tsp/line.h"
 #include "tsp/rkga.h"
 #include "tsp/util.h"
+#include<fstream>
 
-#define NUM_POINTS 50
-Point points[NUM_POINTS];
+#define NUM_POINTS 30
+// Point points[NUM_POINTS];
 
 
+std::vector<Point> readPoints(){
+    std::string cwd_path = ros::package::getPath("tsp");
+    std::string points_file = cwd_path + "/config/com.txt";
 
-void randomIntializePoints(){
-    srand(time(NULL));
-    for(Point & point: points){//need to use reference to change x and y
-        point.x = randomFloat(0.0, 10.0);
-        point.y = randomFloat(0.0, 10.0);
+    std::ifstream in;
+    in.open(points_file);
+    std::string s;
+    std::vector<Point> points;
+    int count = 0;
+    while (getline(in, s)){
+        //逐行读取数据并存于s中，直至数据全部读取
+        float x,y;
+        std::stringstream point_xy;
+        point_xy.str(s);
+        point_xy>>x;
+        point_xy>>y;
+        points.push_back(Point(x,y));
+        std::cout<<x<<' '<<y<<count<<'\n';
+        count ++;
     }
-    return;
+    return points;
 }
 
-std::vector<int> ga_main(Point points[NUM_POINTS]){
-    RKGA ga = RKGA(0.35, 0.55, 0.30, 0.005, NUM_POINTS, 3000, 20);
-    ga.initialize(points);
+
+std::vector<int> ga_main(std::vector<Point> &points){
+    RKGA ga = RKGA(points, 0.35, 0.55, 0.30, 0.005, NUM_POINTS, 3000, 20);
+    ga.initialize();
     int generation = 0;
     while(generation < ga.MaxGeneration){
-        int selection_size = ga.select(points);
-        int crossover_size = ga.crossover(points);
+        int selection_size = ga.select();
+        int crossover_size = ga.crossover();
         generation ++;
     }
     //ga.printResult();
@@ -43,8 +59,7 @@ int main(int argc, char **argv){
     ros::Rate loop_rate(1);
 
     // to test GA first initialize points randomly
-    randomIntializePoints();
-
+    std::vector<Point> points = readPoints();
     while(ros::ok()){
         std_msgs::Int32MultiArray msg;
         msg.data = ga_main(points);

@@ -19,7 +19,7 @@
 #include "tsp/util.h"
 
 
-void calculateFitness(Chromosome & chromosome, Point * points){
+void calculateFitness(Chromosome & chromosome, std::vector<Point> &points){
     //copy a new dna, sort it based on fractional, the path is gene.index
     std::vector<Gene> dna = chromosome.dna;
     std::sort(dna.begin(), dna.end(),compareAscendingFractional);
@@ -37,7 +37,7 @@ void calculateFitness(Chromosome & chromosome, Point * points){
     return;
 }
 
-Chromosome generateRandomChomosome(int ChromosomeSize, Point * points){
+Chromosome generateRandomChomosome(int ChromosomeSize, std::vector<Point> &points){
     Chromosome chromosome;
     for(int j = 0; j < ChromosomeSize; ++j){
         float frac = randomFloat(0.0,1.0);
@@ -62,6 +62,7 @@ Chromosome selectParent(std::vector<Chromosome> &population, int selectionSize, 
 }
 
 RKGA::RKGA(
+    std::vector<Point> points,
     float Ps, // percentage of the new population constituted by selection
     float Px, // percentage of the new population constituted by crossover
     float Pu, // threshold for the crossover
@@ -70,6 +71,7 @@ RKGA::RKGA(
     int PopulaionSize,  //define the size of populaion;
     int MaxGeneration
 ){
+    this->points = points;
     this->Ps = Ps;
     this->Px = Px;
     this->Pu = Pu;
@@ -79,7 +81,7 @@ RKGA::RKGA(
     this->MaxGeneration = MaxGeneration;
 }
 
-void RKGA::initialize(Point * points){
+void RKGA::initialize(){
     /* initialize random seed: */
     srand(time(NULL));
 
@@ -89,7 +91,7 @@ void RKGA::initialize(Point * points){
     }
 }
 
-int RKGA::select(Point * points){
+int RKGA::select(){
     int selection_size = (int)((float)PopulaionSize * Ps);
 
     //sort the chomosome in population in ascending order in population
@@ -97,7 +99,7 @@ int RKGA::select(Point * points){
     return selection_size;
 }
 
-int RKGA::crossover(Point * points){
+int RKGA::crossover(){
     int crossover_size = (int)((float)PopulaionSize * Px);
     int selection_size = (int)((float)PopulaionSize * Ps);
 
