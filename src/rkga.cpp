@@ -82,9 +82,6 @@ RKGA::RKGA(
 }
 
 void RKGA::initialize(){
-    /* initialize random seed: */
-    srand(time(NULL));
-
     for(int i = 0; i < PopulaionSize; ++i){
         Chromosome chromosome = generateRandomChomosome(ChromosomeSize, points);
         population.push_back(chromosome);
@@ -102,9 +99,6 @@ int RKGA::select(){
 int RKGA::crossover(){
     int crossover_size = (int)((float)PopulaionSize * Px);
     int selection_size = (int)((float)PopulaionSize * Ps);
-
-    /* initialize random seed: */
-    srand(time(NULL));
 
     for(int i = 0; i < crossover_size; ++i){
         // first select two chromosome in selected pool using tournament porcedure
@@ -138,11 +132,22 @@ int RKGA::crossover(){
 }
 
 void RKGA::mutate(){
-    srand(time(NULL));
-    for(int i = 0; i < PopulaionSize; ++i){
-        if(randomFloat(0.0,1.0) < Pm){
-            
+    for(Chromosome & ch: population){
+        for(Gene & g: ch.dna){
+            if(randomFloat(0.0,1.0) < Pm){
+                g.fractional = randomFloat(0.0, 1.0);
+            }
         }
+        calculateFitness(ch, points);
+    }
+}
+
+void RKGA::immigrate(){
+    int crossover_size = (int)((float)PopulaionSize * Px);
+    int selection_size = (int)((float)PopulaionSize * Ps);
+    int immigrate_size = PopulaionSize - crossover_size - selection_size;
+    for(int i = 0; i < immigrate_size; ++i){
+        population[crossover_size + selection_size + i] = generateRandomChomosome(ChromosomeSize, points);
     }
 }
 

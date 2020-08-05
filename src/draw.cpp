@@ -22,7 +22,7 @@ void Draw::paint(const std_msgs::Int32MultiArray& msg){
         nodes.header.frame_id = edges.header.frame_id = "/tsp_frame";
         nodes.header.stamp = edges.header.stamp = ros::Time::now();
         nodes.ns = edges.ns = "draw";
-        nodes.action = edges.action = visualization_msgs::Marker::MODIFY;
+        nodes.action = edges.action = visualization_msgs::Marker::ADD;
         nodes.pose.orientation.w = edges.pose.orientation.w = 1.0;
 
         nodes.id = 0;
@@ -31,11 +31,11 @@ void Draw::paint(const std_msgs::Int32MultiArray& msg){
         nodes.type = visualization_msgs::Marker::POINTS;
         edges.type = visualization_msgs::Marker::LINE_STRIP;
         // POINTS markers use x and y scale for width/height respectively
-        nodes.scale.x = 0.2;
-        nodes.scale.y = 0.2;
+        nodes.scale.x = 0.3;
+        nodes.scale.y = 0.3;
 
         // LINE_STRIP/LINE_LIST markers use only the x component of scale, for the line width
-        edges.scale.x = 0.1;
+        edges.scale.x = 0.2;
 
         // nodes are green
         nodes.color.g = 1.0f;
@@ -43,7 +43,7 @@ void Draw::paint(const std_msgs::Int32MultiArray& msg){
 
         // edges is blue
         edges.color.r = 1.0;
-        edges.color.a = 0.6;
+        edges.color.a = 1.0;
 
         for(int i = 0; i < num_points; ++i){
             geometry_msgs::Point p;
