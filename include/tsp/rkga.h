@@ -51,7 +51,7 @@ public:
         float Px, // percentage of the new population constituted by crossover
         float Pu, // threshold for the crossover
         float Pm,
-        int ChromosomeSize, // define the size of each chromosome; 
+        // int ChromosomeSize, // define the size of each chromosome; 
         int PopulaionSize,  //define the size of populaion;
         int MaxGeneration   // define the max generation
     );

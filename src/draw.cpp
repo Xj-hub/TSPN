@@ -43,7 +43,7 @@ void Draw::paint(const std_msgs::Int32MultiArray& msg){
         nodes.color.a = 1.0;
 
         // edges is blue
-        edges.color.b = 1.0;
+        edges.color.r = 1.0;
         edges.color.a = 0.6;
 
         for(int i = 0; i < num_points; ++i){

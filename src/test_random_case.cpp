@@ -9,13 +9,9 @@
 #include "tsp/util.h"
 
 
-#define NUM_POINTS 30
-
-
-
 
 std::vector<int> ga_main(std::vector<Point> &points){
-    RKGA ga = RKGA(points, 0.35, 0.55, 0.30, 0.005, NUM_POINTS, 3000, 20);
+    RKGA ga = RKGA(points, 0.35, 0.55, 0.30, 0.005, 3000, 20);
     ga.initialize();
     int generation = 0;
     while(generation < ga.MaxGeneration){
@@ -30,7 +26,7 @@ std::vector<int> ga_main(std::vector<Point> &points){
 int main(int argc, char **argv){
     ros::init(argc, argv, "path_talker");
     ros::NodeHandle n;
-    ros::Publisher chatter_pub = n.advertise<std_msgs::Int32MultiArray>("path", 1000);
+    ros::Publisher chatter_pub = n.advertise<std_msgs::Int32MultiArray>("/path", 1000);
     ros::Rate loop_rate(1);
 
     // to test GA first initialize points randomly
