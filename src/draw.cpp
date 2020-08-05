@@ -16,14 +16,13 @@ Draw::Draw(ros::NodeHandle * nh, std::vector<Point> points){
 void Draw::paint(const std_msgs::Int32MultiArray& msg){
     std::vector<int> index = msg.data;
     ROS_INFO("paint the points");
-    ros::Rate r(1);
     int num_points = points.size();
-    while(ros::ok()){
+    
         visualization_msgs::Marker nodes, edges;
         nodes.header.frame_id = edges.header.frame_id = "/tsp_frame";
         nodes.header.stamp = edges.header.stamp = ros::Time::now();
         nodes.ns = edges.ns = "draw";
-        nodes.action = edges.action = visualization_msgs::Marker::ADD;
+        nodes.action = edges.action = visualization_msgs::Marker::MODIFY;
         nodes.pose.orientation.w = edges.pose.orientation.w = 1.0;
 
         nodes.id = 0;
@@ -57,8 +56,7 @@ void Draw::paint(const std_msgs::Int32MultiArray& msg){
         }
         marker_pub.publish(nodes);
         marker_pub.publish(edges);
-        r.sleep();
-    }
+        
 }
 
 

@@ -41,7 +41,7 @@ class RKGA
     float Pu; // threshold for the crossover
     float Pm; // threshold for the mutation
     int ChromosomeSize; // define the size of each chromosome;
-    int PopulaionSize;  //define the size of populaion;
+    int PopulaionSize;  // define the size of populaion;
     std::vector<Chromosome> population;// = std::vector<Chromosome>(PopulaionSize)
 public:
     int MaxGeneration;  // define the max generation

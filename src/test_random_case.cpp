@@ -32,6 +32,7 @@ int main(int argc, char **argv){
     // to test GA first initialize points randomly
     std::vector<Point> points = readPoints();
     while(ros::ok()){
+        
         std_msgs::Int32MultiArray msg;
         msg.data = ga_main(points);
         chatter_pub.publish(msg);
