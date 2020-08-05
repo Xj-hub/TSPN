@@ -48,7 +48,7 @@ std::vector<int> ga_main(std::vector<Point> &points){
         int crossover_size = ga.crossover();
         generation ++;
     }
-    //ga.printResult();
+    ga.printResult();
     return ga.calculatePath();
 }
 
@@ -63,10 +63,7 @@ int main(int argc, char **argv){
     while(ros::ok()){
         std_msgs::Int32MultiArray msg;
         msg.data = ga_main(points);
-
-        ROS_INFO("%d", msg.data[0]);
         chatter_pub.publish(msg);
-
         ros::spinOnce();
         loop_rate.sleep();
     }
