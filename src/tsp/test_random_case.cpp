@@ -5,7 +5,7 @@
 #include "std_msgs/String.h"
 #include "std_msgs/Int32MultiArray.h"
 
-#include "tsp/point.h"
+#include "point.h"
 #include "tsp/line.h"
 #include "tsp/rkga.h"
 #include "util.h"

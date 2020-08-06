@@ -14,7 +14,7 @@
 #include <assert.h>
 #include <cfloat>    //define FLT_MAX
 #include "tsp/rkga.h"
-#include "tsp/point.h"
+#include "point.h"
 #include "tsp/distance.h"
 #include "util.h"
 

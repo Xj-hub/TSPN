@@ -2,7 +2,7 @@
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
 #include "draw.h"
-#include "tsp/point.h"
+#include "point.h"
 #include "util.h"
 #include <iostream>
 

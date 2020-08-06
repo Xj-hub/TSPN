@@ -1,7 +1,7 @@
 #include "ros/ros.h"
 #include <ros/package.h>
 #include "std_srvs/Empty.h"
-#include "tsp/point.h"
+#include "point.h"
 #include "util.h"
 #include <time.h>    //reset random seed time(NULL)
 #include<fstream>

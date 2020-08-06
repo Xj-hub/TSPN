@@ -1,7 +1,7 @@
 #ifndef TSP_DISTANCE_H
 #define TSP_DISTANCE_H
 
-#include "tsp/point.h"
+#include "point.h"
 #include<math.h>
 float euclideanDistance(Point p1, Point p2){
     float dist;

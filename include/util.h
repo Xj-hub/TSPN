@@ -4,7 +4,7 @@
 #include <iostream>
 #include <assert.h>
 #include <stdlib.h>     /* srand, rand */
-#include "tsp/point.h"
+#include "point.h"
 #include <sstream>
 #include <ros/package.h>
 #include<fstream>

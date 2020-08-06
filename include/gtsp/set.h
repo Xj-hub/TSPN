@@ -1,7 +1,7 @@
 #ifndef GTSP_SET_H
 #define GTSP_SET_H
 
-#include "tsp/point.h"
+#include "point.h"
 #include <vector>
 
 struct Set{

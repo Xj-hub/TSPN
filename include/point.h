@@ -1,5 +1,5 @@
-#ifndef TSP_POINT_H
-#define TSP_POINT_H
+#ifndef POINT_H
+#define POINT_H
 struct Point{
     float x;
     float y;

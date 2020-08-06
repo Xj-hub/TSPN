@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include "std_msgs/Int32MultiArray.h"
-#include "tsp/point.h"
+#include "point.h"
 #include "gtsp/set.h"
 
 class Draw{

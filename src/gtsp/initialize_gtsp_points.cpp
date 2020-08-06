@@ -1,7 +1,7 @@
 #include "ros/ros.h"
 #include <ros/package.h>
 #include "std_srvs/Empty.h"
-#include "tsp/point.h"
+#include "point.h"
 #include "util.h"
 #include <time.h>    //reset random seed time(NULL)
 #include<fstream>
@@ -48,10 +48,14 @@ public:
         // if file exist open, if not make a new file
         off.open(points_file,std::ios::trunc); 
         for(int i = 0; i < num_sets; ++ i){
-            int num_points_in_set = randomInt(1, max_num_points);
+            int num_points_in_set = randomInt(3, max_num_points);
+            float center_x = randomFloat(-20.0, 20.0);
+            float center_y = randomFloat(-20.0, 20.0);
             for(int j = 0; j < num_points_in_set; ++j){
-                float x = randomFloat(0.0, 10.0);
-                float y = randomFloat(0.0, 10.0);
+                float radius_x = randomFloat(2.0 , 4.0);
+                float radius_y = randomFloat(2.0 , 4.0);
+                float x = randomFloat(center_x - radius_x, center_x + radius_x);
+                float y = randomFloat(center_y - radius_y, center_y + radius_y);
                 off << i<<' '<< x << ' ' << y<<std::endl;
             }
         }

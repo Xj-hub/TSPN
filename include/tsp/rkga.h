@@ -1,6 +1,6 @@
 #ifndef TSP_RKGA_H
 #define TSP_RKGA_H
-#include "tsp/point.h"
+#include "point.h"
 #include "tsp/line.h"
 #include <vector>
 
