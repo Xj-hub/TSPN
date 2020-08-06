@@ -1,5 +1,5 @@
-#ifndef TSP_DISTANCE_H
-#define TSP_DISTANCE_H
+#ifndef DISTANCE_H
+#define DISTANCE_H
 
 #include "point.h"
 #include<math.h>
