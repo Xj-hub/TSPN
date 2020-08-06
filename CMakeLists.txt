@@ -210,18 +210,15 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-set(FILE_LIST src/test_random_case.cpp src/rkga.cpp)
-
-add_executable(tsp_points src/tsp_points.cpp)
-target_link_libraries(tsp_points ${catkin_LIBRARIES})
+set(FILE_LIST src/tsp/test_random_case.cpp src/tsp/rkga.cpp)
 
 add_executable(test_random_case ${FILE_LIST})
 target_link_libraries(test_random_case ${catkin_LIBRARIES})
 
-add_executable(initialize_points src/initialize_points.cpp)
+add_executable(initialize_points src/tsp/initialize_points.cpp)
 target_link_libraries(initialize_points ${catkin_LIBRARIES})
 add_dependencies(initialize_points tsp_gencpp)
 
 
-add_executable(draw src/draw)
+add_executable(draw src/tsp/draw)
 target_link_libraries(draw ${catkin_LIBRARIES})
