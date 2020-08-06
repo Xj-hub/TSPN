@@ -222,3 +222,6 @@ add_dependencies(initialize_points tsp_gencpp)
 
 add_executable(draw src/tsp/draw)
 target_link_libraries(draw ${catkin_LIBRARIES})
+
+add_executable(draw_neighbors src/tspn/draw_neighbors.cpp)
+target_link_libraries(draw_neighbors ${catkin_LIBRARIES})
