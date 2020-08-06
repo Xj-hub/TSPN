@@ -132,13 +132,18 @@ int RKGA::crossover(){
 }
 
 void RKGA::mutate(){
+    bool change = 0;
     for(Chromosome & ch: population){
         for(Gene & g: ch.dna){
             if(randomFloat(0.0,1.0) < Pm){
                 g.fractional = randomFloat(0.0, 1.0);
+                change = 1;
             }
         }
-        calculateFitness(ch, points);
+        if(change == 1){
+            calculateFitness(ch, points);
+            change = 0;
+        }
     }
 }
 
