@@ -16,7 +16,7 @@
 #include "tsp/rkga.h"
 #include "tsp/point.h"
 #include "tsp/distance.h"
-#include "tsp/util.h"
+#include "util.h"
 
 
 void calculateFitness(Chromosome & chromosome, std::vector<Point> &points){

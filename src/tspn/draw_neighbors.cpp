@@ -1,8 +1,8 @@
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include "tsp/draw.h"
+#include "draw.h"
 #include "tsp/point.h"
-#include "tsp/util.h"
+#include "util.h"
 #include <iostream>
 
 int main(int argc, char ** argv){

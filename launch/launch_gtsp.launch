@@ -1,0 +1,4 @@
+<launch>
+    <rosparam command="load" file="$(find tsp)/config/tsp_param.yaml" />
+    <node name="initialize_gtsp_points" pkg="tsp" type="initialize_gtsp_points" output="screen"/>
+</launch>

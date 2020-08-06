@@ -2,7 +2,7 @@
 #include <ros/package.h>
 #include "std_srvs/Empty.h"
 #include "tsp/point.h"
-#include "tsp/util.h"
+#include "util.h"
 #include <time.h>    //reset random seed time(NULL)
 #include<fstream>
 
@@ -30,7 +30,7 @@ public:
         ROS_INFO("Initialize %d points", num_points);
 
         std::string cwd_path = ros::package::getPath("tsp");
-        std::string points_file = cwd_path + "/config/com.txt";
+        std::string points_file = cwd_path + "/config/tsp.txt";
 
         std::ofstream off;
         // ios::trunc means first clear the file,

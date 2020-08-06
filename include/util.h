@@ -1,16 +1,18 @@
-#ifndef TSP_UTIL_H
-#define TSP_UTIL_H
+#ifndef UTIL_H
+#define UTIL_H
 
+#include <iostream>
 #include <assert.h>
 #include <stdlib.h>     /* srand, rand */
 #include "tsp/point.h"
 #include <sstream>
 #include <ros/package.h>
 #include<fstream>
+#include "gtsp/set.h"
 
 static std::vector<Point> readPoints(){
     std::string cwd_path = ros::package::getPath("tsp");
-    std::string points_file = cwd_path + "/config/com.txt";
+    std::string points_file = cwd_path + "/config/tsp.txt";
 
     std::ifstream in;
     in.open(points_file);
@@ -29,6 +31,38 @@ static std::vector<Point> readPoints(){
         count ++;
     }
     return points;
+}
+
+static std::vector<Set> readSets(){
+    std::string cwd_path = ros::package::getPath("tsp");
+    std::string sets_file = cwd_path + "/config/gtsp.txt";
+
+    std::ifstream in;
+    in.open(sets_file);
+    std::string s;
+    std::vector<Set> sets;   
+    int prev_index = -1;
+    while (getline(in, s)){
+        //逐行读取数据并存于s中，直至数据全部读取
+        int cur_index;
+        float x,y;
+        std::stringstream point_xy;
+        point_xy.str(s);
+        point_xy>>cur_index;
+        
+        if(cur_index != prev_index){
+            Set set;
+            set.index = cur_index;
+            prev_index = cur_index;
+            sets.push_back(set);
+        }
+
+        point_xy>>x;
+        point_xy>>y;
+        sets.back().points.push_back(Point(x,y));
+    
+    }
+    return sets;
 }
 
 inline float randomFloat(float min, float max)

@@ -8,7 +8,7 @@
 #include "tsp/point.h"
 #include "tsp/line.h"
 #include "tsp/rkga.h"
-#include "tsp/util.h"
+#include "util.h"
 
 
 
@@ -34,14 +34,17 @@ int main(int argc, char **argv){
     // to test GA first initialize points randomly
     std::vector<Point> points = readPoints();
     // RKGA ga = RKGA(points, 0.35, 0.55, 0.30, 0.005, 3000, 20);
-    RKGA ga = RKGA(points,0.35, 0.55, 0.30, 0.005, 3000, 20);
+    RKGA ga = RKGA(points,0.35, 0.55, 0.30, 0.005, 1000, 200);
     ga.initialize();
+    int count = 0;
     while(ros::ok()){
         std_msgs::Int32MultiArray msg;
         msg.data = ga_main(ga, points);
         chatter_pub.publish(msg);
         ros::spinOnce();
+        std::cout<<count<<'\n';
         loop_rate.sleep();
+        count ++;
     }
     return 0;
 }
