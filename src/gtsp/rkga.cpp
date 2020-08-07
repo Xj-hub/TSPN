@@ -13,13 +13,13 @@
 #include <algorithm> //use sort
 #include <assert.h>
 #include <cfloat>    //define FLT_MAX
-#include "tsp/rkga.h"
+#include "gtsp/rkga.h"
 #include "point.h"
 #include "distance.h"
 #include "util.h"
 
 
-void calculateFitness(Chromosome & chromosome, std::vector<Point> &points){
+void calculateFitness(Chromosome & chromosome, std::vector<Set> &sets){
     //copy a new dna, sort it based on fractional, the path is gene.index
     std::vector<Gene> dna = chromosome.dna;
     std::sort(dna.begin(), dna.end(),compareAscendingFractional);
@@ -31,21 +31,22 @@ void calculateFitness(Chromosome & chromosome, std::vector<Point> &points){
     //calculate distance base on the distance function
     float cost = 0.0;
     for(int i = 0; i < dna_size; ++i){
-        cost += euclideanDistance(points[dna[i].index], points[dna[i+1].index]);
+        cost += euclideanDistance(sets[dna[i].index].points[dna[i].point_index], sets[dna[i+1].index].points[dna[i+1].point_index]);
     }
     chromosome.fitness = cost;
     return;
 }
 
-Chromosome generateRandomChomosome(int ChromosomeSize, std::vector<Point> &points){
+Chromosome generateRandomChomosome(int ChromosomeSize, std::vector<Set> &sets){
     Chromosome chromosome;
     for(int j = 0; j < ChromosomeSize; ++j){
         float frac = randomFloat(0.0,1.0);
-        Gene gene(frac, j);
+        int point_index = randomInt(0, sets[j].points.size()-1);
+        Gene gene(point_index, frac, j);
         chromosome.dna.push_back(gene);
         //calculate fitness for each chromosome
     }
-    calculateFitness(chromosome, points);
+    calculateFitness(chromosome, sets);
     return chromosome;
 }
 
@@ -62,7 +63,7 @@ Chromosome selectParent(std::vector<Chromosome> &population, int selectionSize, 
 }
 
 RKGA::RKGA(
-    std::vector<Point> points,
+    std::vector<Set> sets,
     float Ps, // percentage of the new population constituted by selection
     float Px, // percentage of the new population constituted by crossover
     float Pu, // threshold for the crossover
@@ -71,19 +72,19 @@ RKGA::RKGA(
     int PopulaionSize,  //define the size of populaion;
     int MaxGeneration
 ){
-    this->points = points;
+    this->sets = sets;
     this->Ps = Ps;
     this->Px = Px;
     this->Pu = Pu;
     this->Pm = Pm;
     this->PopulaionSize = PopulaionSize;
-    this->ChromosomeSize = points.size();
+    this->ChromosomeSize = sets.size();
     this->MaxGeneration = MaxGeneration;
 }
 
 void RKGA::initialize(){
     for(int i = 0; i < PopulaionSize; ++i){
-        Chromosome chromosome = generateRandomChomosome(ChromosomeSize, points);
+        Chromosome chromosome = generateRandomChomosome(ChromosomeSize, sets);
         population.push_back(chromosome);
     }
 }
@@ -123,7 +124,7 @@ int RKGA::crossover(){
                 child.dna[j] = parent_2.dna[j];
             }
         }
-        calculateFitness(child, points);
+        calculateFitness(child, sets);
 
         // std::cout<<parent_1.fitness<<' '<<parent_2.fitness<<' '<<child.fitness<<'\n';
         population[selection_size + i] = child;
@@ -141,19 +142,18 @@ void RKGA::mutate(){
             }
         }
         if(change == 1){
-            calculateFitness(ch, points);
+            calculateFitness(ch, sets);
             change = 0;
         }
     }
 }
-
 
 void RKGA::immigrate(){
     int crossover_size = (int)((float)PopulaionSize * Px);
     int selection_size = (int)((float)PopulaionSize * Ps);
     int immigrate_size = PopulaionSize - crossover_size - selection_size;
     for(int i = 0; i < immigrate_size; ++i){
-        population[crossover_size + selection_size + i] = generateRandomChomosome(ChromosomeSize, points);
+        population[crossover_size + selection_size + i] = generateRandomChomosome(ChromosomeSize, sets);
     }
 }
 
@@ -168,13 +168,13 @@ void RKGA::printResult(){
     std::cout<<population.front().fitness<<'\n';
 }
 
-std::vector<int> RKGA::calculatePath(){
-    std::vector<int> path;
+std::vector<std::pair<int,int>> RKGA::calculatePath(){
+    std::vector<std::pair<int, int>> path;
     std::sort(population.begin(), population.end(), compareAscendingFitness);
     Chromosome best = population.front();
     std::sort(best.dna.begin(), best.dna.end(),compareAscendingFractional);
     for(Gene & gene: best.dna){
-        path.push_back(gene.index);
+        path.push_back({gene.index, 0});
     }
     return path;
 }

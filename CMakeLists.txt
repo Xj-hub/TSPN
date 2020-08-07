@@ -52,11 +52,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  GtspPath.msg
+)
 
 ## Generate services in the 'srv' folder
 add_service_files(
@@ -222,13 +221,21 @@ add_dependencies(initialize_points tsp_gencpp)
 add_executable(draw src/tsp/draw)
 target_link_libraries(draw ${catkin_LIBRARIES})
 
-add_executable(draw_gtsp src/gtsp/draw_gtsp)
-target_link_libraries(draw_gtsp ${catkin_LIBRARIES})
-
-add_executable(draw_neighbors src/tspn/draw_neighbors.cpp)
-target_link_libraries(draw_neighbors ${catkin_LIBRARIES})
 
 ##########################################
 
 add_executable(initialize_gtsp_points src/gtsp/initialize_gtsp_points.cpp)
 target_link_libraries(initialize_gtsp_points ${catkin_LIBRARIES})
+
+add_executable(draw_gtsp src/gtsp/draw_gtsp)
+target_link_libraries(draw_gtsp ${catkin_LIBRARIES})
+
+set(GTSP_FILE_LIST src/gtsp/test_random_case_gtsp.cpp src/gtsp/rkga.cpp)
+add_executable(test_random_case_gtsp ${GTSP_FILE_LIST})
+target_link_libraries(test_random_case_gtsp ${catkin_LIBRARIES})
+add_dependencies(test_random_case_gtsp tsp_gencpp)
+
+###########################################
+
+add_executable(draw_neighbors src/tspn/draw_neighbors.cpp)
+target_link_libraries(draw_neighbors ${catkin_LIBRARIES})

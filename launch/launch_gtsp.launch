@@ -1,6 +1,7 @@
 <launch>
     <rosparam command="load" file="$(find tsp)/config/tsp_param.yaml" />
     <node name="initialize_gtsp_points" pkg="tsp" type="initialize_gtsp_points" output="screen"/>
+    <node name="path_talker" pkg="tsp" type="test_random_case_gtsp" output="screen"/>
     <node name="draw_gtsp" pkg="tsp" type="draw_gtsp" output="screen"/>
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find tsp)/rviz/draw_gtsp.rviz" />
 

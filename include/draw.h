@@ -4,6 +4,7 @@
 #include <ros/ros.h>
 #include "std_msgs/Int32MultiArray.h"
 #include "point.h"
+#include "tsp/GtspPath.h"
 #include "gtsp/set.h"
 
 class Draw{
@@ -16,7 +17,7 @@ private:
 public:
     Draw(ros::NodeHandle * nh, std::vector<Point> points);
     Draw(ros::NodeHandle * nh, std::vector<Set> sets);
-    void paint(const std_msgs::Int32MultiArray& msg);
-    void paint_gtsp(const std_msgs::Int32MultiArray& msg);
+    void paint_tsp(const std_msgs::Int32MultiArray& msg);
+    void paint_gtsp(const tsp::GtspPath& msg);
 };
 #endif

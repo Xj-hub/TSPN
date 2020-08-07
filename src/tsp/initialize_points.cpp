@@ -37,8 +37,8 @@ public:
         // if file exist open, if not make a new file
         off.open(points_file,std::ios::trunc); 
         for(int i = 0; i < num_points; ++ i){
-            float x = randomFloat(0.0, 10.0);
-            float y = randomFloat(0.0, 10.0);
+            float x = randomFloat(-10.0, 10.0);
+            float y = randomFloat(-10.0, 10.0);
             off << x << ' ' << y<<std::endl;
         }
         off.close();//关闭文件

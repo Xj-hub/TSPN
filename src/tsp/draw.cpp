@@ -8,12 +8,12 @@
 
 Draw::Draw(ros::NodeHandle * nh, std::vector<Point> points){
     marker_pub = nh->advertise<visualization_msgs::Marker>("visualization_marker", 10);
-    path_sub = nh->subscribe("/path", 1000, &Draw::paint, this);
+    path_sub = nh->subscribe("/path", 1000, &Draw::paint_tsp, this);
     this->points = points;
 }
 
 // path msg contains the node index in the path
-void Draw::paint(const std_msgs::Int32MultiArray& msg){
+void Draw::paint_tsp(const std_msgs::Int32MultiArray& msg){
     std::vector<int> index = msg.data;
     ROS_INFO("paint the points");
     int num_points = points.size();
@@ -54,6 +54,11 @@ void Draw::paint(const std_msgs::Int32MultiArray& msg){
             nodes.points.push_back(p);
             edges.points.push_back(p);
         }
+        geometry_msgs::Point p;
+        p.x = points[index[0]].x;
+        p.y = points[index[0]].y;
+        p.z = 0;
+        edges.points.push_back(p);
         marker_pub.publish(nodes);
         marker_pub.publish(edges);
         
