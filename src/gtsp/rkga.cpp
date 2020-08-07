@@ -1,13 +1,3 @@
-// #include <boost/math/distributions/laplace.hpp>
-
-// using boost::math::laplace_distribution;
-// laplace_distribution<float> mynormal(1, 2);
-
-
-// int main(){
-//     std::cout<<boost::math::pdf(mynormal, 0);
-//     return 0;
-// }
 #include <iostream>
 #include <time.h>    //reset random seed time(NULL)
 #include <algorithm> //use sort
