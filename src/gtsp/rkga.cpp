@@ -130,6 +130,10 @@ void RKGA::mutate(){
                 g.fractional = randomFloat(0.0, 1.0);
                 change = 1;
             }
+            if(randomFloat(0.0,1.0) < Pm){
+                g.point_index = randomInt(0, sets[g.index].points.size()-1);
+                change = 1;
+            }
         }
         if(change == 1){
             calculateFitness(ch, sets);
@@ -164,7 +168,7 @@ std::vector<std::pair<int,int>> RKGA::calculatePath(){
     Chromosome best = population.front();
     std::sort(best.dna.begin(), best.dna.end(),compareAscendingFractional);
     for(Gene & gene: best.dna){
-        path.push_back({gene.index, 0});
+        path.push_back({gene.index, gene.point_index});
     }
     return path;
 }

@@ -18,7 +18,6 @@ void Draw::paint_gtsp(const tsp::GtspPath& msg){
     std::vector<int> point_index = msg.point_index;
     ROS_INFO("paint the sets");
     int num_set = sets.size();
-    ros::Rate r(0.5);
     visualization_msgs::Marker nodes[num_set], neighbors[num_set],edges;
 
     // draw all the sets
@@ -90,14 +89,12 @@ void Draw::paint_gtsp(const tsp::GtspPath& msg){
     p.z = 0;
     edges.points.push_back(p);
 
-    while(ros::ok()){
-        for (int i = 0; i < num_set; ++i){
-            marker_pub.publish(nodes[i]);
-            marker_pub.publish(neighbors[i]);
-        }
-        marker_pub.publish(edges);
-        r.sleep();
-    }  
+    
+    for (int i = 0; i < num_set; ++i){
+        marker_pub.publish(nodes[i]);
+        marker_pub.publish(neighbors[i]);
+    }
+    marker_pub.publish(edges);
 }
 
 int main(int argc, char ** argv){

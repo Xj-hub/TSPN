@@ -49,7 +49,7 @@ int main(int argc, char **argv){
         chatter_pub.publish(msg);
         ros::spinOnce();
         std::cout<<count<<'\n';
-        // loop_rate.sleep();
+        loop_rate.sleep();
         count ++;
     }
     return 0;
