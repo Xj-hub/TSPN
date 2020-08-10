@@ -142,6 +142,41 @@ void RKGA::mutate(){
     }
 }
 
+void two_opt(Chromosome & chromosome){
+    //copy a new dna, sort it based on fractional, the path is gene.index
+    std::vector<Gene> dna = chromosome.dna;
+    std::sort(dna.begin(), dna.end(),compareAscendingFractional);
+    int dna_size = dna.size();
+    std::vector<int> route;
+    for (Gene & g: dna){
+        route.push_back(g.index);
+    }
+    route.push_back(dna[0].index);
+    std::vector<int> best = route;
+    int improved = true;
+    while(improved){
+        improved = false;
+        
+    }
+}
+// def two_opt(route):
+//      best = route
+//      improved = True
+//      while improved:
+//           improved = False
+//           for i in range(1, len(route)-2):
+//                for j in range(i+1, len(route)):
+//                     if j-i == 1: continue # changes nothing, skip then
+//                     new_route = route[:]
+//                     new_route[i:j] = route[j-1:i-1:-1] # this is the 2woptSwap
+//                     if cost(new_route) < cost(best):
+//                          best = new_route
+//                          improved = True
+//           route = best
+//      return best
+
+
+
 void RKGA::immigrate(){
     int crossover_size = (int)((float)PopulaionSize * Px);
     int selection_size = (int)((float)PopulaionSize * Ps);

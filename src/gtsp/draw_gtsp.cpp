@@ -73,7 +73,7 @@ void Draw::paint_gtsp(const tsp::GtspPath& msg){
     edges.pose.orientation.w = 1.0;
     edges.id = 1 + 2* num_set;
     edges.type = visualization_msgs::Marker::LINE_STRIP;
-    edges.scale.x = 0.1;
+    edges.scale.x = 0.3;
     edges.color.r = 1.0f;
     edges.color.a = 0.8;
     for(int i = 0; i < num_set; ++i){  
