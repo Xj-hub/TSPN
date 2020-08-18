@@ -37,6 +37,62 @@ void calculateFitness(Chromosome & chromosome, std::vector<Point> &points){
     return;
 }
 
+static float GetTwoOptPath(std::vector<Gene> & dna, std::vector<Point> &points, int left, int right){
+    float cost = 0.0;
+    int len = dna.size();
+    for(int i = 0 ; i< left-1; ++i){
+        cost += euclideanDistance(points[dna[i].index], points[dna[i+1].index]);
+    }
+    for(int i = right; i > left; --i){
+        cost += euclideanDistance(points[dna[i].index], points[dna[i-1].index]);
+    }
+    for(int i = right + 1; i < len-1; ++ i){
+        cost += euclideanDistance(points[dna[i].index], points[dna[i+1].index]);
+    }
+    cost += euclideanDistance(points[dna[left-1].index], points[dna[right].index]);
+    cost += euclideanDistance(points[dna[left].index], points[dna[right+1].index]);
+    return cost;
+}
+
+void RKGA::twoOpt(Chromosome & chromosome){
+    //copy a new dna, sort it based on fractional, the path is gene.index
+    std::vector<Gene> dna = chromosome.dna;
+    std::sort(dna.begin(), dna.end(),compareAscendingFractional);
+    
+
+    //push the start point to the path
+    dna.push_back(dna.front());
+    int dna_size = dna.size();
+    //calculate distance of original path
+    float best_cost = 0.0;
+    for(int i = 0; i < dna_size-1; ++i){
+        best_cost += euclideanDistance(points[dna[i].index], points[dna[i+1].index]);
+    }
+    int left_gene_index = -1, right_gene_index = -1;
+    for(int left = 1; left < dna_size -2; ++left){
+        for(int right = left + 1; right < dna_size -1; ++right){
+            //if (right -1 == left) continue;
+            float local_cost = GetTwoOptPath(dna, points, left, right);
+            if(local_cost < best_cost){
+                best_cost = local_cost;
+                left_gene_index = left;
+                right_gene_index = right;
+            }
+        }
+    }
+    
+    // std::cout<<left_gene_index<<"   "<<right_gene_index<<"   "<<best_cost<<"\n";
+    while(left_gene_index<right_gene_index){
+        float temp = chromosome.dna[dna[left_gene_index].index].fractional;
+        chromosome.dna[dna[left_gene_index].index].fractional = chromosome.dna[dna[right_gene_index].index].fractional;
+        chromosome.dna[dna[right_gene_index].index].fractional = temp;
+        left_gene_index ++;
+        right_gene_index --;
+    }
+
+
+}
+
 Chromosome generateRandomChomosome(int ChromosomeSize, std::vector<Point> &points){
     Chromosome chromosome;
     for(int j = 0; j < ChromosomeSize; ++j){
@@ -93,6 +149,11 @@ int RKGA::select(){
 
     //sort the chomosome in population in ascending order in population
     std::sort(population.begin(), population.end(), compareAscendingFitness);
+    for(int i = 0; i< 10; ++i){
+        int index = randomInt(0, selection_size);
+        twoOpt(population[index]);
+    }
+    
     return selection_size;
 }
 

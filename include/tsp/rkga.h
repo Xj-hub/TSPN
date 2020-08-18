@@ -61,5 +61,6 @@ public:
     void immigrate();
     void printResult();
     std::vector<int> calculatePath();
+    void twoOpt(Chromosome & ch);
 };
 #endif
